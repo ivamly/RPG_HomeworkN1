@@ -1,9 +1,10 @@
 package com.ivmaly;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class AbstractCharacter implements Mortal, CombatAction {
+public abstract class AbstractCharacter implements Mortal {
     private final String name;
     private int health;
     private final int damage;
@@ -31,35 +32,49 @@ public abstract class AbstractCharacter implements Mortal, CombatAction {
         return damage;
     }
 
+    public abstract void attackEnemy(List<AbstractCharacter> enemies);
+
+    public void defaultAttack(List<AbstractCharacter> enemies, int damage) {
+        AbstractCharacter target = getRandomAliveCharacter(enemies);
+        if (target != null) {
+            System.out.println(getName() + " attacks " + target.getName() + " and deals " + damage + " damage");
+            target.takeDamage(damage);
+        }
+    }
+
+    public void takeDamage(int damage) {
+        if (!isAlive()) {
+            return;
+        }
+        setHealth(getHealth() - damage);
+        System.out.println(getName() + " took " + damage + " damage");
+        if (!isAlive()) {
+            System.out.println(getName() + " is dead");
+        }
+    }
+
+    public AbstractCharacter getRandomAliveCharacter(List<AbstractCharacter> enemies) {
+        if (enemies.isEmpty()) {
+            return null;
+        }
+        List<AbstractCharacter> aliveEnemies = new ArrayList<>();
+        for (AbstractCharacter enemy : enemies) {
+            if (enemy.isAlive()) {
+                aliveEnemies.add(enemy);
+            }
+        }
+        if (!aliveEnemies.isEmpty()) {
+            return aliveEnemies.get(random.nextInt(aliveEnemies.size()));
+        }
+        return null;
+    }
+
+    public int getRandomNumber(int bound) {
+        return random.nextInt(bound) + 1;
+    }
+
     @Override
     public boolean isAlive() {
         return health > 0;
-    }
-
-    @Override
-    public void takeDamage(int damage) {
-        health -= damage;
-        if (health < 0) {
-            health = 0;
-        }
-        if (!isAlive()) {
-            System.out.println(name + " is dead!");
-        }
-    }
-
-    @Override
-    public void attack(List<AbstractCharacter> characters) {
-        AbstractCharacter character = getRandomCharacter(characters);
-        character.takeDamage(damage);
-    }
-
-    public abstract void attackEnemy(List<AbstractCharacter> enemies);
-
-    public AbstractCharacter getRandomCharacter(List<AbstractCharacter> enemies) {
-        return enemies.get(random.nextInt(enemies.size()));
-    }
-
-    public int getRandomNumber() {
-        return random.nextInt(100) + 1;
     }
 }

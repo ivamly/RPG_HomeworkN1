@@ -14,15 +14,11 @@ public class Goblin extends AbstractCharacter {
 
     @Override
     public void attackEnemy(List<AbstractCharacter> enemies) {
-        if (getRandomNumber() <= CRITICAL_HIT_CHANCE) {
-            performCriticalHit(enemies);
-        } else {
-            attack(enemies);
+        int attackDamage = getDamage();
+        if (getRandomNumber(100) <= CRITICAL_HIT_CHANCE) {
+            attackDamage = (int) (getDamage() * CRITICAL_HIT_MULTIPLIER);
+            System.out.println(getName() + " performs a critical hit!");
         }
-    }
-
-    private void performCriticalHit(List<AbstractCharacter> enemies) {
-        System.out.println(getName() + " performs a critical hit!");
-        getRandomCharacter(enemies).takeDamage((int) (getDamage() * CRITICAL_HIT_MULTIPLIER));
+        defaultAttack(enemies, attackDamage);
     }
 }

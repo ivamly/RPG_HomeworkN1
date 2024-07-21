@@ -13,24 +13,23 @@ public class Zombie extends AbstractCharacter {
 
     @Override
     public void attackEnemy(List<AbstractCharacter> enemies) {
-        attack(enemies);
+        defaultAttack(enemies, BASE_DAMAGE);
     }
 
     @Override
     public void takeDamage(int damage) {
-        setHealth(getHealth() - damage);
-        if (getHealth() <= 0) {
+        if (!isAlive()) {
             if (!isRevived) {
-                revive();
-            } else {
-                System.out.println(getName() + " is dead!");
+                isRevived = true;
+                setHealth(BASE_HEALTH);
+                System.out.println(getName() + " is revived with full health!");
             }
+            return;
         }
-    }
-
-    private void revive() {
-        isRevived = true;
-        setHealth(BASE_HEALTH);
-        System.out.println(getName() + " revived!");
+        setHealth(getHealth() - damage);
+        System.out.println(getName() + " took " + damage + " damage");
+        if (!isAlive()) {
+            System.out.println(getName() + " is dead");
+        }
     }
 }

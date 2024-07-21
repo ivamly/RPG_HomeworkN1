@@ -14,17 +14,16 @@ public class Archer extends AbstractCharacter {
 
     @Override
     public void attackEnemy(List<AbstractCharacter> enemies) {
-        if (getRandomNumber() <= RAIN_OF_ARROWS_CHANCE) {
-            System.out.println(getName() + " performs Rain of Arrows!");
-            performRainOfArrows(enemies);
+        if (getRandomNumber(100) <= RAIN_OF_ARROWS_CHANCE) {
+            System.out.println(getName() + " performs a rain of arrows!");
+            for (AbstractCharacter enemy : enemies) {
+                if (enemy.isAlive()) {
+                    System.out.println(getName() + " hits " + enemy.getName() + " with rain of arrows for " + RAIN_OF_ARROWS_DAMAGE + " damage");
+                    enemy.takeDamage(RAIN_OF_ARROWS_DAMAGE);
+                }
+            }
         } else {
-            attack(enemies);
-        }
-    }
-
-    private void performRainOfArrows(List<AbstractCharacter> enemies) {
-        for (AbstractCharacter character : enemies) {
-            character.takeDamage(RAIN_OF_ARROWS_DAMAGE);
+            defaultAttack(enemies, BASE_DAMAGE);
         }
     }
 }

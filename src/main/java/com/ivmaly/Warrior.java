@@ -13,16 +13,12 @@ public class Warrior extends AbstractCharacter {
 
     @Override
     public void attackEnemy(List<AbstractCharacter> enemies) {
-        if (getRandomNumber() <= DOUBLE_ATTACK_CHANCE) {
-            System.out.println(getName() + " performs a double attack!");
-            performDoubleAttack(enemies);
+        if (getRandomNumber(100) <= DOUBLE_ATTACK_CHANCE) {
+            System.out.println(getName() + " has a double attack!");
+            defaultAttack(enemies, BASE_DAMAGE);
+            defaultAttack(enemies, BASE_DAMAGE);
         } else {
-            attack(enemies);
+            defaultAttack(enemies, BASE_DAMAGE);
         }
-    }
-
-    private void performDoubleAttack(List<AbstractCharacter> enemies) {
-        attack(enemies);
-        attack(enemies);
     }
 }
