@@ -1,9 +1,13 @@
 package com.ivmaly;
 
-public abstract class AbstractCharacter implements Mortal {
+import java.util.List;
+import java.util.Random;
+
+public abstract class AbstractCharacter implements Mortal, CombatAction {
     private final String name;
     private int health;
     private final int damage;
+    private static final Random random = new Random();
 
     public AbstractCharacter(String name, int health, int damage) {
         this.name = name;
@@ -27,11 +31,35 @@ public abstract class AbstractCharacter implements Mortal {
         return damage;
     }
 
+    @Override
     public boolean isAlive() {
         return health > 0;
     }
 
-    public abstract void takeDamage(int damage);
+    @Override
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health < 0) {
+            health = 0;
+        }
+        if (!isAlive()) {
+            System.out.println(name + " is dead!");
+        }
+    }
 
-    public abstract void attackEnemy(AbstractCharacter target);
+    @Override
+    public void attack(List<AbstractCharacter> characters) {
+        AbstractCharacter character = getRandomCharacter(characters);
+        character.takeDamage(damage);
+    }
+
+    public abstract void attackEnemy(List<AbstractCharacter> enemies);
+
+    public AbstractCharacter getRandomCharacter(List<AbstractCharacter> enemies) {
+        return enemies.get(random.nextInt(enemies.size()));
+    }
+
+    public int getRandomNumber() {
+        return random.nextInt(100) + 1;
+    }
 }
