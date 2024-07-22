@@ -19,24 +19,22 @@ public class Game {
             for (AbstractCharacter attacker : team1) {
                 if (!hasAliveCharacters(team2)) break;
                 if (attacker.isAlive()) {
-                    attacker.attackEnemy(getAliveEnemies(team2));
+                    attacker.attackEnemy(team2);
                 }
             }
 
             if (!hasAliveCharacters(team2)) {
-                System.out.println("Team 1 wins!");
                 break;
             }
 
             for (AbstractCharacter attacker : team2) {
                 if (!hasAliveCharacters(team1)) break;
                 if (attacker.isAlive()) {
-                    attacker.attackEnemy(getAliveEnemies(team1));
+                    attacker.attackEnemy(team1);
                 }
             }
 
             if (!hasAliveCharacters(team1)) {
-                System.out.println("Team 2 wins!");
                 break;
             }
         }
@@ -51,16 +49,6 @@ public class Game {
             }
         }
         return false;
-    }
-
-    private List<AbstractCharacter> getAliveEnemies(List<AbstractCharacter> team) {
-        List<AbstractCharacter> aliveEnemies = new ArrayList<>();
-        for (AbstractCharacter enemy : team) {
-            if (enemy.isAlive()) {
-                aliveEnemies.add(enemy);
-            }
-        }
-        return aliveEnemies;
     }
 
     private void endGame() {

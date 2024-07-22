@@ -36,10 +36,8 @@ public abstract class AbstractCharacter implements Mortal {
 
     public void defaultAttack(List<AbstractCharacter> enemies, int damage) {
         AbstractCharacter target = getRandomAliveCharacter(enemies);
-        if (target != null) {
-            System.out.println(getName() + " attacks " + target.getName() + " and deals " + damage + " damage");
-            target.takeDamage(damage);
-        }
+        System.out.println(getName() + " attacks " + target.getName() + " and deals " + damage + " damage");
+        target.takeDamage(damage);
     }
 
     public void takeDamage(int damage) {
@@ -54,19 +52,13 @@ public abstract class AbstractCharacter implements Mortal {
     }
 
     public AbstractCharacter getRandomAliveCharacter(List<AbstractCharacter> enemies) {
-        if (enemies.isEmpty()) {
-            return null;
-        }
         List<AbstractCharacter> aliveEnemies = new ArrayList<>();
         for (AbstractCharacter enemy : enemies) {
             if (enemy.isAlive()) {
                 aliveEnemies.add(enemy);
             }
         }
-        if (!aliveEnemies.isEmpty()) {
-            return aliveEnemies.get(random.nextInt(aliveEnemies.size()));
-        }
-        return null;
+        return aliveEnemies.get(random.nextInt(aliveEnemies.size()));
     }
 
     public int getRandomNumber(int bound) {
